@@ -1,6 +1,6 @@
 # SpringAI
 
-This repository contains sections for the SpringAI course.
+This repository contains sections for the Spring AI Framework with various model. Just use this for learning purpose and not production grade application code.
 
 ## About Spring AI
 
