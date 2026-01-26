@@ -34,12 +34,15 @@ Spring AI is a framework that simplifies the development of applications that in
 ## FAQ: Spring AI Basics
 
 **Q1: What is Spring AI?**
+
 A1: Spring AI is an open-source framework designed to simplify the development of AI-powered applications using the Spring ecosystem. It provides abstractions for various AI models (chat, embeddings, text-to-image) and integrates with different AI providers and vector databases.
 
 **Q2: Why use Spring AI instead of direct API calls?**
+
 A2: Spring AI offers a consistent API across multiple AI providers, reducing vendor lock-in and making it easier to switch between models or providers. It also provides Spring-native features like auto-configuration, simplified dependency management, and integration with other Spring projects, streamlining AI application development.
 
 **Q3: What types of AI models does Spring AI support?**
+
 A3: Spring AI supports various model types including:
 *   **Chat Models:** For conversational AI and generating human-like text.
 *   **Embedding Models:** For creating vector representations of text, useful for semantic search and recommendation systems.
@@ -47,7 +50,9 @@ A3: Spring AI supports various model types including:
 *   **Audio Transcription:** For converting speech to text.
 
 **Q4: Does Spring AI support different AI providers?**
+
 A4: Yes, Spring AI is designed to be provider-agnostic. It supports popular providers like OpenAI, Azure OpenAI, Hugging Face, Google (Vertex AI), and more, allowing developers to choose their preferred service.
 
 **Q5: What are Vector Databases and why are they important for Spring AI?**
+
 A5: Vector databases store high-dimensional vectors, which are numerical representations of data (like text embeddings). They are crucial for applications like Retrieval-Augmented Generation (RAG), enabling AI models to retrieve relevant information from a knowledge base before generating a response, thereby improving accuracy and reducing hallucinations. Spring AI provides integrations with several vector databases.
