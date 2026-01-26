@@ -61,3 +61,75 @@ The API will return the AI's response as a plain text string.
 4.  Click "Send".
 
 The API will return the AI's response as a plain text string.
+
+## ChatModel: The Core Abstraction
+
+The `ChatModel` interface is a lower-level abstraction in Spring AI that provides a simple and consistent way to interact with various AI chat models. It defines the contract for communication, allowing you to send prompts and receive generated responses without being tied to a specific AI provider's API.
+
+### Importance of ChatModel
+
+-   **Abstraction:** It hides the complexity of interacting with different AI models, each with its own unique API and data format.
+-   **Portability:** By coding to the `ChatModel` interface, you can easily switch between different AI models (e.g., OpenAI, Google Gemini, Anthropic Claude) with minimal code changes.
+-   **Consistency:** It provides a unified API for sending prompts and receiving responses, making your code cleaner and more maintainable.
+
+### How it Defines Contracts
+
+The `ChatModel` interface defines a single method:
+
+```java
+ChatResponse call(Prompt prompt);
+```
+
+-   `Prompt`: This is an object that encapsulates the message or series of messages you want to send to the AI model.
+-   `ChatResponse`: This object contains the AI's response, including the generated message and any associated metadata.
+
+### Example Usage
+
+Here's a simple example of how to use the `ChatModel` interface directly:
+
+```java
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ChatService {
+
+    private final ChatModel chatModel;
+
+    @Autowired
+    public ChatService(ChatModel chatModel) {
+        this.chatModel = chatModel;
+    }
+
+    public String getAiResponse(String message) {
+        Prompt prompt = new Prompt(message);
+        ChatResponse response = chatModel.call(prompt);
+        return response.getResult().getOutput().getContent();
+    }
+}
+```
+
+In this example, the `ChatService` takes a `ChatModel` as a dependency. The `getAiResponse` method creates a `Prompt` object, calls the `chatModel.call()` method, and extracts the generated content from the `ChatResponse`.
+
+### Interview Questions and Answers
+
+**Q1: What is the primary purpose of the `ChatModel` interface in Spring AI?**
+
+**A1:** The `ChatModel` interface serves as a low-level abstraction for interacting with various AI chat models. Its primary purpose is to provide a consistent and portable API for sending prompts and receiving responses, decoupling the application from the specifics of any particular AI provider's API.
+
+**Q2: How does `ChatModel` promote portability in an application?**
+
+**A2:** By coding against the `ChatModel` interface, developers can easily switch between different AI models (e.g., from OpenAI to Google Gemini) by simply changing the configuration and providing a different implementation of the `ChatModel`. This avoids vendor lock-in and allows for greater flexibility in choosing the best model for a given task.
+
+**Q3: What are the main components of the `ChatModel` contract?**
+
+**A3:** The contract is primarily defined by the `call(Prompt prompt)` method. The two main components are:
+-   `Prompt`: An object representing the input to the model, which can be a single message or a conversation history.
+-   `ChatResponse`: An object representing the model's output, containing the generated message and other metadata like usage statistics.
+
+**Q4: When would you use the `ChatModel` interface directly instead of the higher-level `ChatClient`?**
+
+**A4:** You would typically use the `ChatModel` directly when you need more control over the interaction with the AI model, such as when implementing custom retry logic, handling specific error conditions, or when you need to work with the raw `ChatResponse` object to access metadata not exposed by the `ChatClient`. The `ChatClient` is a higher-level abstraction that uses the `ChatModel` internally and provides a more fluent and convenient API for common use cases.
