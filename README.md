@@ -27,7 +27,7 @@ Spring AI is a framework that simplifies the development of applications that in
 
 ## Sections
 
-*   [Section 1: OpenAI](./Section01/openai)
+*   [Section 1: OpenAI + Observibilty + Ollama + OpenAI[older version of spring and mvn]](./Section01/openai)
 *   Section 2: Coming Soon
 *   Section 3: Coming Soon
 
