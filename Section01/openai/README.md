@@ -198,3 +198,49 @@ In this example, the `ChatController` uses `ChatClient` to send a message and di
 **Q4: Can you still access `ChatModel`'s capabilities when using `ChatClient`?**
 
 **A4:** Yes, `ChatClient` is built upon `ChatModel`. While `ChatClient` provides a simplified interface, if you need the granular control offered by `ChatModel` (e.g., access to `ChatResponse` metadata, custom retry logic), you would either inject and use `ChatModel` directly or configure `ChatClient` with specific `ChatModel` implementations.
+
+## Observability
+
+This application is configured with observability features using Micrometer, Prometheus, and Grafana. This allows you to monitor the application's performance, AI model usage, and other key metrics.
+
+### Components
+
+-   **Micrometer:** Collects metrics from the application (e.g., HTTP requests, JVM stats, Spring AI metrics).
+-   **Prometheus:** A time-series database that scrapes metrics from the application's `/actuator/prometheus` endpoint.
+-   **Grafana:** A visualization tool that queries Prometheus and displays metrics in dashboards.
+
+### Accessing the Dashboards
+
+When the application is running (which also starts the Docker containers for Prometheus and Grafana via Docker Compose), you can access the following:
+
+1.  **Prometheus UI:** `http://localhost:9090`
+    -   You can verify that the application is being scraped by going to **Status -> Targets**. You should see `openai-app` (host.docker.internal:8081) as UP.
+    -   You can query metrics directly, such as `gen_ai_client_token_usage_total`.
+
+2.  **Grafana UI:** `http://localhost:3000`
+    -   **Login:**
+        -   Username: `openai`
+        -   Password: `openai`
+    -   **Dashboard:** Navigate to **Dashboards** and select **Spring AI Metrics Dashboard**.
+    -   This dashboard provides insights into:
+        -   Total AI Requests
+        -   Average Response Time
+        -   Token Usage (Prompt vs. Completion)
+        -   Error Rates
+        -   System Resources (CPU, Memory)
+
+### Key Metrics
+
+Some of the key metrics exposed by Spring AI include:
+
+-   `gen_ai_client_token_usage_total`: Tracks the number of tokens used (input and output).
+-   `gen_ai_client_operation_seconds`: Tracks the duration and count of AI operations.
+-   `http_server_requests_seconds`: Tracks HTTP request duration and count.
+
+### Troubleshooting
+
+-   **"Prometheus DataSource not connected" in Grafana:** Ensure that the Prometheus container is running and accessible from the Grafana container. The default configuration uses `http://prometheus:9090`.
+-   **No data in dashboards:**
+    -   Ensure the application is running and reachable by Prometheus.
+    -   Make some requests to the `/api/chat` endpoint to generate traffic and metrics.
+    -   Check the Prometheus Targets page (`http://localhost:9090/targets`) to ensure the scrape target is UP.
