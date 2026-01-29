@@ -18,6 +18,6 @@ public class ChatController {
 
     @GetMapping("/chat")
     public String chat(@RequestParam("message") String  message ) {
-        return chatClient.prompt(message).call().content();
+        return chatClient.prompt().user(message).call().content();
     }
 }
